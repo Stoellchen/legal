@@ -6,6 +6,19 @@
     <title>Mentions Légales / Impressum</title>
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 40px auto; padding: 0 20px; }
+        
+        /* Initialer Status für die Container */
+        #main-content { display: block; }
+        #domain-warning { 
+            display: none; 
+            background: #fff5f5; 
+            border: 2px solid #feb2b2; 
+            padding: 30px; 
+            border-radius: 8px; 
+            text-align: center; 
+            margin-top: 50px; 
+        }
+
         nav { margin-bottom: 40px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
         h1 { border-bottom: 2px solid #333; padding-bottom: 10px; }
         h2 { margin-top: 30px; color: #555; font-size: 1.2em; }
@@ -18,63 +31,81 @@
 </head>
 <body>
 
-    <nav>
-        <strong>Aller vers :</strong> <a href="#de">Deutsch (Impressum)</a>
-    </nav>
+    <div id="domain-warning">
+        <h2>Accès restreint / Zugriff eingeschränkt</h2>
+        <p>Cette page ne peut pas être consultée directement sur ce domaine technique.<br>
+        Diese Seite kann auf dieser technischen Domain nicht direkt angezeigt werden.</p>
+        <p><strong>Veuillez utiliser votre domaine principal. / Bitte nutzen Sie Ihre Hauptdomain.</strong></p>
+    </div>
 
-    <section id="fr">
-        <h1>Mentions Légales</h1>
-        <div class="contact-box">
-            <h2>Éditeur du site</h2>
-            <p>Thomas Stoll<br>Buchserstrasse 5<br>8108 Dällikon<br>Suisse</p>
-            <p><strong>Téléphone :</strong> +41 79 643 11 11<br>
-               <strong>E-mail :</strong> <span class="dynamic-mail"></span></p>
-        </div>
-        <h2>Hébergement & CDN</h2>
-        <p>Ce site est hébergé via GitHub et diffusé par : <strong>Cloudflare, Inc.</strong>, 101 Townsend St, San Francisco, CA 94107, USA.</p>
-        <h2>Protection des données</h2>
-        <p>Aucun cookie n'est utilisé. Aucune donnée personnelle n'est collectée par l'éditeur.</p>
-    </section>
+    <div id="main-content">
+        <nav>
+            <strong>Aller vers :</strong> <a href="#de">Deutsch (Impressum)</a>
+        </nav>
 
-    <hr>
+        <section id="fr">
+            <h1>Mentions Légales</h1>
+            <div class="contact-box">
+                <h2>Éditeur du site</h2>
+                <p>Thomas Stoll<br>Buchserstrasse 5<br>8108 Dällikon<br>Suisse</p>
+                <p><strong>Téléphone :</strong> +41 79 643 11 11<br>
+                   <strong>E-mail :</strong> <span class="dynamic-mail"></span></p>
+            </div>
+            <h2>Hébergement & CDN</h2>
+            <p>Ce site est hébergé via GitHub et diffusé par : <strong>Cloudflare, Inc.</strong>, 101 Townsend St, San Francisco, CA 94107, USA.</p>
+            <h2>Protection des données</h2>
+            <p>Aucun cookie n'est utilisé. Aucune donnée personnelle n'est collectée par l'éditeur.</p>
+        </section>
 
-    <section id="de">
-        <h1>Impressum & Datenschutz</h1>
-        <div class="contact-box">
-            <h2>Verantwortliche Person</h2>
-            <p>Thomas Stoll<br>Buchserstrasse 5<br>8108 Dällikon<br>Schweiz</p>
-            <p><strong>Telefon:</strong> +41 79 643 11 11<br>
-               <strong>E-Mail:</strong> <span class="dynamic-mail"></span></p>
-        </div>
-        <h2>Hosting & CDN</h2>
-        <p>Diese Webseite wird bereitgestellt über GitHub und das Netzwerk von: <strong>Cloudflare, Inc.</strong>, 101 Townsend St, San Francisco, CA 94107, USA.</p>
-        <h2>Datenschutz</h2>
-        <p>Diese Seite verwendet keine Cookies. Es werden keine personenbezogenen Daten durch den Betreiber erhoben.</p>
-    </section>
+        <hr>
+
+        <section id="de">
+            <h1>Impressum & Datenschutz</h1>
+            <div class="contact-box">
+                <h2>Verantwortliche Person</h2>
+                <p>Thomas Stoll<br>Buchserstrasse 5<br>8108 Dällikon<br>Schweiz</p>
+                <p><strong>Telefon:</strong> +41 79 643 11 11<br>
+                   <strong>E-Mail:</strong> <span class="dynamic-mail"></span></p>
+            </div>
+            <h2>Hosting & CDN</h2>
+            <p>Diese Webseite wird bereitgestellt über GitHub und das Netzwerk von: <strong>Cloudflare, Inc.</strong>, 101 Townsend St, San Francisco, CA 94107, USA.</p>
+            <h2>Datenschutz</h2>
+            <p>Diese Seite verwendet keine Cookies. Es werden keine personenbezogenen Daten durch den Betreiber erhoben.</p>
+        </section>
+    </div>
 
     <script>
         (function() {
-            // "Versteckte" Werte als Base64
+            var host = window.location.hostname.toLowerCase();
+            
+            // 1. Prüfung auf technische Domains (Sperre für pages.dev & github.io)
+            if (host.indexOf("pages.dev") !== -1 || host.indexOf("github.io") !== -1) {
+                document.getElementById("main-content").style.display = "none";
+                document.getElementById("domain-warning").style.display = "block";
+                return; // Beendet das Script
+            }
+
+            // 2. Base64 kodierte Werte für den Spamschutz
             var u = atob("bGVnYWwtaW5mbw=="); // legal-info
             var d1 = atob("MzM3OTA=");         // 33790
             var d2 = atob("Y2hhdWRlYm9yZGU="); // chaudeborde
             
-            // Holt den Hostnamen und zerlegt ihn von hinten
-            // Beispiel: legal.33790.fr -> ["legal", "33790", "fr"]
-            var parts = window.location.hostname.split('.');
+            var parts = host.split('.');
             var domain = "";
 
+            // 3. Dynamische E-Mail-Generierung basierend auf der aktuellen URL
             if (parts.length >= 2) {
-                // Nimmt die letzten zwei Teile (Domain + TLD)
+                // Nimmt die letzten zwei Segmente (z.B. chaudeborde.fr)
                 domain = parts[parts.length - 2] + "." + parts[parts.length - 1];
             } else {
-                // Fallback falls lokal oder Pfad-basiert
-                domain = d1 + ".fr"; 
+                // Fallback falls lokal aufgerufen
+                domain = d1 + ".fr";
             }
 
             var fullAddr = u + "@" + domain;
             var elements = document.getElementsByClassName("dynamic-mail");
 
+            // 4. Injektion der Links in die HTML-Platzhalter
             for (var i = 0; i < elements.length; i++) {
                 var link = document.createElement("a");
                 link.href = "mailto:" + fullAddr;
@@ -86,3 +117,4 @@
 
 </body>
 </html>
+
