@@ -48,15 +48,27 @@
             <div class="contact-box">
                 <h2>Éditeur du site</h2>
                 <p>Thomas Stoll<br>Buchserstrasse 5<br>8108 Dällikon<br>Suisse</p>
-                <p><strong>Téléphone :</strong> +41 79 643 11 11<br>
-                   <strong>E-mail :</strong> <span class="dynamic-mail"></span></p>
+                <p>
+                    <strong>Téléphone :</strong> <span class="dynamic-phone"></span><br>
+                    <strong>E-mail :</strong> <span class="dynamic-mail"></span>
+                </p>
             </div>
-            <h2>Hébergement & CDN</h2>
-            <p>Ce site est hébergé via GitHub et diffusé par : <strong>Cloudflare, Inc.</strong>, 101 Townsend St, San Francisco, CA 94107, USA.</p>
-            <h2>Protection des données</h2>
-            <p>Aucun cookie n'est utilisé. Aucune donnée personnelle n'est collectée par l'éditeur.</p>
-        </section>
 
+            <h2>Hébergement & CDN</h2>
+            <p>Ce site est hébergé via GitHub Inc. (88 Colin P. Kelly Jr St, San Francisco, CA 94107, USA) 
+               et diffusé par :<br>
+               <strong>Cloudflare, Inc.</strong><br>
+               101 Townsend St, San Francisco, CA 94107, USA.<br>
+               Tél : +1 (650) 319-8930</p>
+
+            <h2>Responsabilité</h2>
+            <p>L'éditeur n'est pas responsable des contenus des liens externes pointant vers des sites tiers.</p>
+
+            <h2>Protection des données</h2>
+            <p>Aucun cookie n'est utilisé. Aucune donnée personnelle n'est collectée par l'éditeur. 
+               Les adresses IP sont traitées techniquement par l'hébergeur pour assurer la sécurité.</p>
+        </section>
+        
         <hr>
 
         <section id="de">
@@ -64,53 +76,64 @@
             <div class="contact-box">
                 <h2>Verantwortliche Person</h2>
                 <p>Thomas Stoll<br>Buchserstrasse 5<br>8108 Dällikon<br>Schweiz</p>
-                <p><strong>Telefon:</strong> +41 79 643 11 11<br>
-                   <strong>E-Mail:</strong> <span class="dynamic-mail"></span></p>
+                <p>
+                    <strong>Telefon:</strong> <span class="dynamic-phone"></span><br>
+                    <strong>E-Mail:</strong> <span class="dynamic-mail"></span>
+                </p>
             </div>
+
             <h2>Hosting & CDN</h2>
-            <p>Diese Webseite wird bereitgestellt über GitHub und das Netzwerk von: <strong>Cloudflare, Inc.</strong>, 101 Townsend St, San Francisco, CA 94107, USA.</p>
+            <p>Diese Webseite wird bereitgestellt über GitHub und das Netzwerk von:<br>
+            <strong>Cloudflare, Inc.</strong>, 101 Townsend St, San Francisco, CA 94107, USA.<br>
+            Tel: +1 (650) 319-8930</p>
+
+            <h2>Haftungsausschluss</h2>
+            <p>Trotz sorgfältiger inhaltlicher Kontrolle wird keine Haftung für die Inhalte externer Links übernommen. 
+               Für den Inhalt der verlinkten Seiten sind ausschliesslich deren Betreiber verantwortlich.</p>
+
             <h2>Datenschutz</h2>
             <p>Diese Seite verwendet keine Cookies. Es werden keine personenbezogenen Daten durch den Betreiber erhoben.</p>
         </section>
+    
     </div>
 
-    <script>
+<script>
         (function() {
             var host = window.location.hostname.toLowerCase();
             
-            // 1. Prüfung auf technische Domains (Sperre für pages.dev & github.io)
             if (host.indexOf("pages.dev") !== -1 || host.indexOf("github.io") !== -1) {
                 document.getElementById("main-content").style.display = "none";
                 document.getElementById("domain-warning").style.display = "block";
-                return; // Beendet das Script
+                return;
             }
 
-            // 2. Base64 kodierte Werte für den Spamschutz
+            // 1. E-Mail Generierung
             var u = atob("bGVnYWwtaW5mbw=="); // legal-info
-            var d1 = atob("MzM3OTA=");         // 33790
-            var d2 = atob("Y2hhdWRlYm9yZGU="); // chaudeborde
-            
             var parts = host.split('.');
-            var domain = "";
+            var domain = (parts.length >= 2) ? parts[parts.length - 2] + "." + parts[parts.length - 1] : "33790.fr";
+            var fullMail = u + "@" + domain;
 
-            // 3. Dynamische E-Mail-Generierung basierend auf der aktuellen URL
-            if (parts.length >= 2) {
-                // Nimmt die letzten zwei Segmente (z.B. chaudeborde.fr)
-                domain = parts[parts.length - 2] + "." + parts[parts.length - 1];
-            } else {
-                // Fallback falls lokal aufgerufen
-                domain = d1 + ".fr";
+            var mailElements = document.getElementsByClassName("dynamic-mail");
+            for (var i = 0; i < mailElements.length; i++) {
+                var link = document.createElement("a");
+                link.href = "mailto:" + fullMail;
+                link.textContent = fullMail;
+                mailElements[i].appendChild(link);
             }
 
-            var fullAddr = u + "@" + domain;
-            var elements = document.getElementsByClassName("dynamic-mail");
+            // 2. Telefon Generierung (Anti-Bot)
+            var p1 = "+41";
+            var p2 = "79";
+            var p3 = "643";
+            var p4 = "11";
+            var fullPhone = p1 + " " + p2 + " " + p3 + " " + p4 + " " + p4;
 
-            // 4. Injektion der Links in die HTML-Platzhalter
-            for (var i = 0; i < elements.length; i++) {
-                var link = document.createElement("a");
-                link.href = "mailto:" + fullAddr;
-                link.textContent = fullAddr;
-                elements[i].appendChild(link);
+            var phoneElements = document.getElementsByClassName("dynamic-phone");
+            for (var j = 0; j < phoneElements.length; j++) {
+                var pLink = document.createElement("a");
+                pLink.href = "tel:" + fullPhone.replace(/\s/g, '');
+                pLink.textContent = fullPhone;
+                phoneElements[j].appendChild(pLink);
             }
         })();
     </script>
