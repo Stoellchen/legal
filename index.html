@@ -97,7 +97,7 @@
     
     </div>
 
-<script id="security-script">
+<script id="security-logic">
         (function() {
             var host = window.location.hostname.toLowerCase();
             
@@ -135,19 +135,23 @@
                 pLink.textContent = fullPhone;
                 phoneElements[j].appendChild(pLink);
             }
-
-            // 3. Selbstzerstörung nach 1 Sekunde
-            setTimeout(function() {
-            var scriptTag = document.getElementById('security-script');
-            if (scriptTag) {
-                scriptTag.parentNode.removeChild(scriptTag);
-                console.log("Cleanup complete."); // Optional, kannst du löschen
-            }
-        }, 1000);
             
         })();
     </script>
-
+    
+    <script id="security-cleaner">
+        setTimeout(function() {
+            // Lösche den Logik-Block
+            var logic = document.getElementById('security-logic');
+            if (logic) logic.remove();
+            
+            // Lösche mich selbst (den Cleaner)
+            var cleaner = document.getElementById('security-cleaner');
+            if (cleaner) cleaner.remove();
+        }, 2000);
+    </script>
+    
+    
 </body>
 </html>
 
